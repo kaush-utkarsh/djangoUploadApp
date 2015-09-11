@@ -6,6 +6,7 @@ jQuery(document).ready(function() {
     */
     $.backstretch("static/img/backgrounds/1.jpg");
     
+    
     /*
         Form validation
     */
