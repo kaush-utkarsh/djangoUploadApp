@@ -19,7 +19,10 @@ from login import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/', views.home),
+    url(r'^signIn/', views.signIn),
+    url(r'^signUp/', views.signUp),
+    url(r'^signOut/', views.signOut),
+    # url(r'^login/', views.home),
     url(r'^$', views.home),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),

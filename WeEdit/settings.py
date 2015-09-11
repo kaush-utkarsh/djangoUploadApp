@@ -55,7 +55,6 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
    'social.backends.google.GoogleOAuth2',
-   'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -118,8 +117,8 @@ STATICFILES_DIRS = (
 
 
 
-SOCIAL_AUTH_FACEBOOK_KEY ='587737158031025'
-SOCIAL_AUTH_FACEBOOK_SECRET ='6b2eeff90f75f3cdd7d266477428ffad'
+SOCIAL_AUTH_FACEBOOK_KEY ='178681532464428'
+SOCIAL_AUTH_FACEBOOK_SECRET ='dc32dc72be056068a530eb68b704b14b'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='AIzaSyAJQRfQe8fsUM3_V1mzp4a6KDjEcPJHnyM'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='o15I4RV3lgZjKV9zMtylpiG8'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='584696154376-qndne8hmetetnompekupcn1lpkg24r81.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='eW-kBdEAzO-ffK-YNq6Z3nty'
