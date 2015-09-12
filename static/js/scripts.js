@@ -79,18 +79,31 @@ jQuery(document).ready(function() {
     	
         if(cnt==0 && $(this).attr('id')=='signInForm')
         {
-            console.log($(this).serialize())
+            // console.log($(this).serialize())
             var resultset = makeAjax($(this).serialize(),"/signIn/")
-            window.location.href='/'
-            console.log(resultset.responseText)
+            if (resultset.responseText == "false")
+            {
+                $('#passwordError').attr('style','display:block;')
+                return false;
+            }
+            else
+                window.location.href='/'
+            // console.log(resultset.responseText)
 
         }
         else if(cnt==0 && $(this).attr('id')=='signUpForm')
         {
             console.log($(this).serialize())
             var resultset = makeAjax($(this).serialize(),"/signUp/")
-            window.location.href='/'
-            console.log(resultset.responseText)
+            if (resultset.responseText == "false")
+            {
+                $('#usernameError').attr('style','display:block;')
+                return false;
+            }
+            else
+                window.location.href='/'
+            
+            // console.log(resultset.responseText)
         }
 
     });
