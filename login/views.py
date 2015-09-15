@@ -19,6 +19,20 @@ def home(request):
 	return render_to_response('login.html',
 						 context_instance=context)
 
+
+def dashboard(request):
+	if 'username' in s.keys():
+		if s['username'] != '':
+			data = {'username': s['username']}
+			return render(request, "dashboard.html", data)
+
+	context = RequestContext(request,
+						   {'request': request,
+							'user': request.user})
+	return HttpResponseRedirect("/")
+
+
+
 def signIn(request):
 	if request.method == 'POST':
 		username = request.POST.get('form-username', '')
