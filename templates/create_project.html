@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+{% if user and not user.is_anonymous or username %}
+	{% load static %}
+		<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+			<meta name="description" content="">
+			<meta name="author" content="">
+			<link rel="icon" href="{% static 'ico/favicon.ico' %}">
+
+
+			<title>Sticky Footer Navbar Template for Bootstrap</title>
+
+			<!-- Bootstrap core CSS -->
+			<link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+			<!-- Custom styles for this template -->
+			<link href="{% static 'dist/css/sticky-footer-navbar.css' %}" rel="stylesheet">
+
+			<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+			<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+			<script src="{% static 'assets/js/ie-emulation-modes-warning.js' %}"></script>
+
+			<!-- Override Bootstrap core CSS -->
+			<link href="{% static 'dist/css/style.css' %}" rel="stylesheet">
+			<link href="{% static 'css/dropdowns-enhancement.css' %}" rel="stylesheet">
+
+			<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+			<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+			<![endif]-->
+			<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="ka4kg1gb2iv4psm"></script>
+
+		</head>
+
+		<body>
+
+			<!-- Fixed navbar -->
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Project name</a>
+					</div>
+					<div id="navbar" class="collapse navbar-collapse pull-right">
+						<ul class="nav navbar-nav">
+							<li><a href="/dashboard/">Home</a></li>
+							<li><a href="#refer">Refer a Friend</a></li>
+							<li><a href="#portfolio">My Portfolio</a></li>
+							<li class="active"><a href="/new-project/">New Project</a></li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+			</nav>
+
+			<!-- Begin page content -->
+			<div class="container" style="width:100%">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									<span class="title-icon">
+										<i class="glyphicon glyphicon-tags"></i>
+									</span>
+									Create Project
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div id="createProject" class="panel-body">
+								<input type="text" placeholder="Enter the project title" class="form-control"/><br>
+								<button class="btn btn-success form-control" onclick="createProject(this);">Create Project</button>
+							</div>
+							<div id="editProject" class="panel-body" style="display:none;">
+								<input type="text" placeholder="New Title for Project" class="form-control"/><br>
+								<button class="btn btn-success form-control" onclick="renameProject(this);">Rename Project</button><br><br> 
+								<button class="btn btn-warning form-control" onclick="deleteProject(this);">Delete Project</button>
+							</div>
+							<div id="newProject" class="panel-body" style="display:none;">
+								<label id="projectName">Project Name</label>
+								<button class="btn btn-primary" onclick="modifyProject(this);">Rename Project</button>
+								<button class="btn btn-warning" onclick="deleteProject(this);">Delete Project</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default" id="projectDetails" style="display:none;">
+						<div class="panel-heading" role="tab" id="headingFour">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									<span class="title-icon">
+										<i class="glyphicon glyphicon-list"></i>
+									</span>
+									More about the project
+								</a>
+							</h4>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+							<div class="panel-body">
+							<button class="btn btn-primary form-control" onclick="fetchDropBox();">Upload using DropBox</button><br><br> 
+							<button class="btn btn-primary form-control" onclick="">Upload from computer</button><br>
+								
+						<div id="dropBoxFiless" class="row">
+        				
+        				</div>
+
+
+								<!-- <div class="input-group">
+									<div class="input-group-btn">
+							      		<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Select an Option<span class="caret"></span></button>
+									    <ul class="dropdown-menu">
+							                <li>
+							                  <input type="radio" id="ex1_1" name="ex1" value="1" checked="">
+							                  <label for="ex1_1" onclick="fetchDropBox(this)">DropBox link</label>
+							                </li>
+							                <li>
+							                  <input type="radio" id="ex1_2" name="ex1" value="2">
+							                  <label for="ex1_2">File Upload</label>
+							                </li>
+							            </ul>
+								    </div>
+								    <input type="text" placeholder="Enter file path" class="form-control" aria-label="...">
+								    <span class="input-group-btn">
+	        					    	<button type="button" class="btn btn-success">
+	                                  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	                                	</button>
+	                                	<button type="button" class="btn btn-danger">
+	                                  		<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+	                                	</button>
+									</span>
+							   </div>
+							   <br> -->
+							   <br>
+						    	<div class="input-group">
+									<div class="input-group-btn">
+										<button class="btn btn-success form-control" onclick="">Save Project</button>
+									</div>
+								</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+
+			<footer class="footer">
+				<div class="container">
+					<div id="navbar" class="collapse navbar-collapse fooler-bar">
+						<!--  	 -->
+					</div>
+				</div>
+			</footer>
+
+
+			<!-- Bootstrap core JavaScript
+			================================================== -->
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	        <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+			<script src="{% static 'js/dropdowns-enhancement.js' %}"></script>
+			<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+			<script src="{% static 'assets/js/ie10-viewport-bug-workaround.js' %}"></script>
+			<script src="{% static 'dist/js/custom.js' %}"></script>    
+		</body>
+		<script type="text/javascript">
+	    var dropBoxFiles; 
+		var options = {
+
+				    // Required. Called when a user selects an item in the Chooser.
+				    success: function(files) {
+					    dropBoxFiles = files
+				    },
+
+				    // Optional. Called when the user closes the dialog without selecting a file
+				    // and does not include any parameters.
+				    cancel: function() {
+
+				    },
+
+				    // Optional. "preview" (default) is a preview link to the document for sharing,
+				    // "direct" is an expiring link to download the contents of the file. For more
+				    // information about link types, see Link types below.
+				    linkType: "direct", // or "direct"
+
+				    // Optional. A value of false (default) limits selection to a single file, while
+				    // true enables multiple file selection.
+				    multiselect: false, // or true
+
+				    // Optional. This is a list of file extensions. If specified, the user will
+				    // only be able to select files with these extensions. You may also specify
+				    // file types, such as "video" or "images" in the list. For more information,
+				    // see File types below. By default, all extensions are allowed.
+				    extensions: ['.pdf', '.doc', '.docx','.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv', '.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma'],
+				};
+		function fetchDropBox(item)
+		{
+			Dropbox.choose(options);
+		}
+
+		function populateFiles()
+		{
+			$.each(dropBoxFiles,function(i,item){
+				
+			})
+
+		}
+	    </script>
+	{% else %}
+	
+		<head>
+			<meta http-equiv="refresh" content="0; url=/" />
+		</head>
+		<script type="text/javascript">
+	        window.location.href = "/"
+	    </script>
+	{% endif %}
+</html>

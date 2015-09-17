@@ -19,3 +19,20 @@ def get_user(username):
 def create_user(name,email,username,hash_pwd):
 	user= User_Details(name=name, email=email, username = username,password=hash_pwd)
 	user.save()
+	return user
+
+def get_project(userid,project):
+	project = ''
+	try:
+		project = Project_Table.objects.get(project_title = project,userid=userid)
+	except Project_Table.DoesNotExist:
+		project = []
+		return project
+		# pass
+		# return serializers.serialize("json", user.objects.all())	        
+	return serializers.serialize("json", [project])
+
+# def create_project(name,email,username,hash_pwd):
+# 	user= User_Details(name=name, email=email, username = username,password=hash_pwd)
+# 	user.save()
+# 	return user

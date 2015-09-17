@@ -1,0 +1,72 @@
+.footer{
+	/*position: static !important;
+	bottom: inherit;*/
+	border-top: 1px solid #e7e7e7;
+}
+textarea, textarea:focus{
+	border:none;
+	height: 200px;
+}
+.panel-group{
+	margin-bottom: 0px;
+}
+.panel {
+	box-shadow: none !important;
+	border: none !important;
+	border-top: 1px solid #ccc !important;
+}
+.navbar-default{
+	background-color: #fff;
+}
+.panel-group .panel{
+	border-radius: 0px !important;
+}
+.panel-group .panel+.panel{
+	margin: 0px !important;
+}
+.panel-heading{
+	padding: 18px 15px !important;
+}
+.panel-body{
+	border: none !important;
+}
+.panel-default>.panel-heading{
+	background-color: #fff !important;
+}
+.panel-title{
+	color: #009AE7 !important;
+}
+.title-icon{
+	font-size: 13px;
+	color: #A5A3A3;
+	padding: 20px;
+}
+.video-box input{
+	margin: 0 30px !important
+}
+.video-box .upload-icon i{
+	font-size: 36px !important;
+	padding: 0px 24px;
+}
+#collapseFour textarea{
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	height: 200px
+}
+.fooler-bar ul{
+	border-right: 1px solid #ccc
+}
+.fooler-bar .cus-btn a{
+	padding: 10px !important;
+}
+.fooler-bar .cus-btn input{
+	border-radius: 15px;
+    width: 110px;
+}
+.btn-link{
+	color: #ccc !important;
+}
+.btn-default{
+	background-color: #ccc !important;
+	color: #fff !important;
+}

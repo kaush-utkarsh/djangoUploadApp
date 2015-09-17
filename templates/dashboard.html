@@ -2,37 +2,39 @@
 <html lang="en">
 {% if user and not user.is_anonymous or username %}
 	{% load static %}
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="{% static 'ico/favicon.ico' %}">
+		<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+			<meta name="description" content="">
+			<meta name="author" content="">
+			<link rel="icon" href="{% static 'ico/favicon.ico' %}">
 
 
-		<title>Sticky Footer Navbar Template for Bootstrap</title>
+			<title>Sticky Footer Navbar Template for Bootstrap</title>
 
-		<!-- Bootstrap core CSS -->
-	    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">		
+			<!-- Bootstrap core CSS -->
+			<link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
-		<!-- Custom styles for this template -->
-		<link href="{% static 'css/sticky-footer-navbar.css' %}" rel="stylesheet">
+			<!-- Custom styles for this template -->
+			<link href="{% static 'dist/css/sticky-footer-navbar.css' %}" rel="stylesheet">
 
-		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-		<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-		<script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+			<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+			<!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+			<script src="{% static 'assets/js/ie-emulation-modes-warning.js' %}"></script>
 
-		<!-- Override Bootstrap core CSS -->
-		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+			<!-- Override Bootstrap core CSS -->
+			<link href="{% static 'dist/css/style.css' %}" rel="stylesheet">
 
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+			<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 			<!--[if lt IE 9]>
-				<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-				<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-				<![endif]-->
-	</head>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+			<![endif]-->
+			<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="ka4kg1gb2iv4psm"></script>
+
+		</head>
 
 		<body>
 
@@ -50,10 +52,10 @@
 					</div>
 					<div id="navbar" class="collapse navbar-collapse pull-right">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">Home</a></li>
+							<li><a href="#">Home</a></li>
 							<li><a href="#refer">Refer a Friend</a></li>
 							<li><a href="#portfolio">My Portfolio</a></li>
-							<li><a href="#new-project">New Project</a></li>
+							<li class="active"><a href="/dashboard/">New Project</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
@@ -69,13 +71,13 @@
 									<span class="title-icon">
 										<i class="glyphicon glyphicon-tags"></i>
 									</span>
-									Family Reunion
+									<label id="projectTitle">Project Title</label>
 								</a>
 							</h4>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<div class="panel-body">
-								<textarea placeholder="Enter the title of your video" class="col-md-12"></textarea>
+								<textarea placeholder="Enter the title of your video" class="col-md-12" onChange="setProjectTitle(this);"></textarea>
 							</div>
 						</div>
 					</div>
@@ -90,11 +92,11 @@
 								</a>
 								<div class="col-md-10 pull-right">
 									<div class="dropdown">
-										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>
+										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Sources <b class="caret"></b></a>
 										<ul class="dropdown-menu">
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
+											<li onclick="fetchDropBox(this,'vids');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
+											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
+											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
 											<li><a href="#"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
 										</ul>
 									</div>
@@ -102,7 +104,7 @@
 							</h4>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-							<div class="panel-body">
+							<!-- <div class="panel-body">
 								<div class="row">
 									<div class="col-md-1">
 										<div class="video-box">
@@ -145,6 +147,12 @@
 										</div>
 									</div>
 								</div>
+							</div> -->
+							<div class="panel-body">
+								<div class="container pull-left">
+									<div class="row" id="dropboxVideos">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -159,12 +167,12 @@
 								</a>
 								<div class="col-md-10 pull-right">
 									<div class="dropdown">
-										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>
+										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Sources <b class="caret"></b></a>
 										<ul class="dropdown-menu">
+											<li onclick="fetchDropBox(this,'aud');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
+											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
+											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
 											<li><a href="#"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
 										</ul>
 									</div>
 								</div>
@@ -172,7 +180,10 @@
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 							<div class="panel-body">
-								
+								<div class="container pull-left">
+									<div class="row" id="dropboxMusic">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -216,25 +227,116 @@
 			</footer>
 
 
-		<!-- Bootstrap core JavaScript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-		<script src="{% static 'js/scripts.js' %}"></script>
-        
-	</body>
-	 {% else %}
+			<!-- Bootstrap core JavaScript
+			================================================== -->
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	        <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+			<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+			<script src="{% static 'assets/js/ie10-viewport-bug-workaround.js' %}"></script>
+			<script src="{% static 'dist/js/custom.js' %}"></script>    
+		</body>
+		<script type="text/javascript">
+		var dropBoxFiles; 
+		var options = {
+
+				    // Required. Called when a user selects an item in the Chooser.
+				    success: function(files) {
+					    // dropBoxFiles = files
+				    	console.log(files)
+				    },
+
+				    // Optional. Called when the user closes the dialog without selecting a file
+				    // and does not include any parameters.
+				    cancel: function() {
+
+				    },
+
+				    // Optional. "preview" (default) is a preview link to the document for sharing,
+				    // "direct" is an expiring link to download the contents of the file. For more
+				    // information about link types, see Link types below.
+				    linkType: "direct", // or "direct"
+
+				    // Optional. A value of false (default) limits selection to a single file, while
+				    // true enables multiple file selection.
+				    multiselect: true, // or false
+
+				    // Optional. This is a list of file extensions. If specified, the user will
+				    // only be able to select files with these extensions. You may also specify
+				    // file types, such as "video" or "images" in the list. For more information,
+				    // see File types below. By default, all extensions are allowed.
+				    extensions: ['.pdf', '.doc', '.docx','.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv', '.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma'],
+				};
+		function fetchDropBox(item,fileType)
+		{
+			if(fileType=="vids")
+			{
+				options.extensions = ['.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv']
+			
+				options.success = function(files)
+				{
+					
+					$.each(files,function(i,item){
+						if(item.thumbnailLink == undefined)
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-facetime-video'></i><div class='caption'><h3 style='font-size:15px;'>"+item.name+"</h3></div></div></div>";
+						else
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption'><h3 style='font-size:15px;'>"+item.name+"</h3></div></div></div>";
+
+			            $('#dropboxVideos').append(thumbnail)
+					})
+
+
+				}
+
+			}
+			else
+			{
+				options.extensions = ['.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma']
+				
+				options.success = function(files)
+				{
+
+
+						
+					$.each(files,function(i,item){
+						if(item.thumbnailLink == undefined)
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption'><h3 style='font-size:15px;'>"+item.name+"</h3></div></div></div>";
+						else
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption'><h3 style='font-size:15px;'>"+item.name+"</h3></div></div></div>";
+
+
+			            $('#dropboxMusic').append(thumbnail)
+					})
+
+
+				}
+			}
+			Dropbox.choose(options);
+		}
+
+		function populateFiles()
+		{
+			$.each(dropBoxFiles,function(i,item){
+				
+			})
+
+		}
+	        function setProjectTitle(item)
+	        {
+	        	if(($(item).val()).trim()!="")
+	        		$('#projectTitle').html($(item).val())
+	        	else
+	        		$('#projectTitle').html("Project Title")
+	        	// console.log($(item).val())
+	        }
+	    </script>
+	{% else %}
 	
-	<head>
-		<meta http-equiv="refresh" content="0; url=/" />
-	</head>
-	<script type="text/javascript">
-        window.location.href = "/"
-    </script>
-
-	 {% endif %}
-
-	</html>
+		<head>
+			<meta http-equiv="refresh" content="0; url=/" />
+		</head>
+		<script type="text/javascript">
+	        window.location.href = "/"
+	    </script>
+	{% endif %}
+</html>

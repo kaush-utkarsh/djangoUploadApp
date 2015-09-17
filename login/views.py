@@ -31,6 +31,17 @@ def dashboard(request):
 							'user': request.user})
 	return HttpResponseRedirect("/")
 
+def new_project(request):
+	if 'username' in s.keys():
+		if s['username'] != '':
+			data = {'username': s['username']}
+			return render(request, "create_project.html", data)
+
+	context = RequestContext(request,
+						   {'request': request,
+							'user': request.user})
+	return HttpResponseRedirect("/")
+
 
 
 def signIn(request):
@@ -49,10 +60,21 @@ def signIn(request):
 			if hash_pwd == u[0]['fields']['password']:
 				resp = username
 				s['username'] = username
+				s['userid'] = u[0]['fields']['userid']
 				s.save()
 			else:
 				resp = "false"
 		return HttpResponse(resp)
+
+
+@csrf_exempt
+def create_project(request):
+	if request.method == 'POST':
+		project_title = request.POST.get('project_title', '')
+		
+		return HttpResponse(resp)
+
+
 
 def signUp(request):
 	if request.method == 'POST':
@@ -68,6 +90,7 @@ def signUp(request):
 		else:
 			methods.create_user(name,email,username,hash_pwd)
 			s['username'] = username
+			s['userid'] = user.userid
 			s.save()
 			resp = username
 		return HttpResponse(resp)
