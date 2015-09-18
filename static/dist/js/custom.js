@@ -9,8 +9,25 @@ $('.panel').on('show.bs.collapse', function (e) {
 var projectName = ""
 var projectDetailsDump;
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function ajaxRequest(payload,url)
 {
+	var csrftoken = getCookie('csrftoken');
     if(payload != ""){
     var datum = $.ajax(
                     {
@@ -18,6 +35,7 @@ function ajaxRequest(payload,url)
                         type: "POST",
                         data: payload,
                         async: false,
+                        beforeSend: function(xhr){xhr.setRequestHeader("X-CSRFToken", csrftoken);},
                         success: function (data) {
                             return data
                     }
@@ -30,6 +48,7 @@ function ajaxRequest(payload,url)
                         url: url,
                         type: "POST",
                         async: false,
+                        beforeSend: function(xhr){xhr.setRequestHeader("X-CSRFToken", csrftoken);},
                         success: function (data) {
                             return data
                     }
@@ -61,6 +80,27 @@ function createProject(item)
 	}
 }
 
+function create_project()
+{
+var uploadedFiles = []
+$('.dropBoxVideoFiles').each(function(i,item){
+	var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"video", source:"dropbox"}
+	uploadedFiles.push(videoFile)
+})
+// var audioFiles =[]
+$('.dropBoxMusicFiles').each(function(i,item){
+	var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"audio", source:"dropbox"}
+	uploadedFiles.push(videoFile)
+})
+
+var projectTitle = $('#projectTitle').html()
+var instructions = $('#instructions').val()
+var payload = {projectTitle:projectTitle, instructions:instructions, files: JSON.stringify(uploadedFiles)}
+var url = "/create-project/"
+var projectId = ajaxRequest(payload,url)
+console.log(projectId)
+}
+
 function renameProject(item)
 {
 	console.log(item)
@@ -76,4 +116,11 @@ function modifyProject(item)
 	console.log(item)
 	$('#newProject').attr('style','display:none;')
 	$('#editProject').attr('style','display:block;')
+}
+
+
+function logOut()
+{
+    var aj = ajaxRequest("","/signOut/")
+    window.location.href='/'
 }

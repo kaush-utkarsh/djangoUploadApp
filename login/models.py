@@ -48,6 +48,7 @@ class User_File_Table(models.Model):
 	file_title = models.CharField(max_length=512,null=True,blank=True)
 	file_web_path = models.CharField(max_length=512,null=True,blank=True)
 	file_server_path = models.CharField(max_length=512,null=True,blank=True)
+	file_thumbnail_path = models.CharField(max_length=512,null=True,blank=True)
 	file_source_type = models.CharField(max_length=512,null=True,blank=True)
 	file_status = models.CharField(max_length=512,null=True,blank=True)
 	file_upload_date = models.DateField(null=True,blank=True)

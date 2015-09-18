@@ -60,7 +60,7 @@ def signIn(request):
 			if hash_pwd == u[0]['fields']['password']:
 				resp = username
 				s['username'] = username
-				s['userid'] = u[0]['fields']['userid']
+				s['userid'] = u[0]['pk']
 				s.save()
 			else:
 				resp = "false"
@@ -70,9 +70,23 @@ def signIn(request):
 @csrf_exempt
 def create_project(request):
 	if request.method == 'POST':
-		project_title = request.POST.get('project_title', '')
+		project_title = request.POST.get('projectTitle', '')
+		instructions = request.POST.get('instructions')
+		files = request.POST.get('files', '')
+		print project_title
+		print instructions
+		projects = methods.get_project(s['userid'],project_title)
+		if len(projects) != 0:
+			project_title = project_title + str(len(projects)+1)
 		
-		return HttpResponse(resp)
+		project = methods.create_project(s['userid'],project_title,instructions)
+		
+		for f in json.loads(files):
+			methods.add_files(s['userid'],project.projectid,f['name'],f['link'],f['thumbnail'],f['type'],f['source'])
+
+		resp = {"project_id":project.projectid,"project_title":project_title}
+
+		return HttpResponse(json.dumps(resp))
 
 
 
