@@ -213,11 +213,12 @@
 				<div class="container">
 					<div id="navbar" class="collapse navbar-collapse fooler-bar">
 						<ul class="nav navbar-nav col-md-4">
-							<li><a href="#">Photos 0</a></li>
-							<li><a href="#">Videos 0</a></li>
+							<li><a href="#" class="glyphicon glyphicon-refresh" onClick="updateStats()"></a></li>
+							<li><a id="MusCount" href="#">Music 0</a></li>
+							<li><a id="VidCount" href="#">Videos 0</a></li>
 						</ul>
 						<ul class="nav navbar-nav col-md-3">
-							<li class="col-md-offset-3"><a href="#">Total: <b>$24.99</b></a></li>
+							<li class="col-md-offset-3"><a id="priceCount" href="#">Total: <b>$00.00</b></a></li>
 						</ul>
 						<ul class="nav navbar-nav col-md-5 cus-btn">
 							<li><a href="#"><input class="btn btn-link" type="button" value="Cancel" name="cancel"></a></li>
@@ -280,14 +281,14 @@
 					
 					$.each(files,function(i,item){
 						if(item.thumbnailLink == undefined)
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
 						else
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
 
 			            $('#dropboxVideos').append(thumbnail)
 					})
 
-
+					updateStats()
 				}
 
 			}
@@ -300,15 +301,15 @@
 	
 					$.each(files,function(i,item){
 						if(item.thumbnailLink == undefined)
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
 						else
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
+							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
 
 
 			            $('#dropboxMusic').append(thumbnail)
 					})
 
-
+					updateStats()
 				}
 			}
 			Dropbox.choose(options);

@@ -124,3 +124,23 @@ function logOut()
     var aj = ajaxRequest("","/signOut/")
     window.location.href='/'
 }
+
+function updateStats()
+{
+	var vidCount = $('.dropBoxVideoFiles').length
+	var musCount = $('.dropBoxMusicFiles').length
+	var sum = 0
+	$('.dropBoxVideoFiles').each(function(i,item){
+		sum = sum+parseInt(parseInt($(item).find('#fileSize').val())/1000000)
+		
+	})
+	// var audioFiles =[]
+	$('.dropBoxMusicFiles').each(function(i,item){
+		sum = sum+parseInt(parseInt($(item).find('#fileSize').val())/1000000)
+
+	})
+
+	$('#MusCount').html("Music "+musCount)
+	$('#VidCount').html("Videos "+vidCount)
+	$('#priceCount').html("Total: <b>$ "+sum+"</b>")
+}
