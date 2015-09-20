@@ -3,7 +3,8 @@ from django.template.context import RequestContext
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.sessions.backends.db import SessionStore
 from django.views.decorators.csrf import csrf_exempt
-import traceback, time, datetime, hashlib, json, methods
+import traceback, time, datetime, hashlib, json, methods, requests
+
 
 s = SessionStore()
 		
@@ -88,7 +89,48 @@ def create_project(request):
 
 		return HttpResponse(json.dumps(resp))
 
+def save_profile(backend, user, response, *args, **kwargs):
+	if backend.name == 'facebook':
+		# profile = user.get_profile()
+		# if profile is None:
+		# 	profile = Profile(user_id=user.id)
+		# profile.gender = response.get('gender')
+		# profile.link = response.get('link')
+		# profile.timezone = response.get('timezone')
+		print user.social_auth.get(provider='facebook').uid
+		# print user.social_auth.get(provider='facebook').email
+		print response
+		# print profile
 
+def user_details(backend, user, response, *args, **kwargs):
+	if backend.name == 'facebook':
+		# profile = user.get_profile()
+		# if profile is None:
+		# 	profile = Profile(user_id=user.id)
+		# profile.gender = response.get('gender')
+		# profile.link = response.get('link')
+		# profile.timezone = response.get('timezone')
+		print response
+		# print profile
+	if backend.name == 'google':
+		# profile = user.get_profile()
+		# if profile is None:
+		# 	profile = Profile(user_id=user.id)
+		# profile.gender = response.get('gender')
+		# profile.link = response.get('link')
+		# profile.timezone = response.get('timezone')
+		print response['access_token']
+		social = user.social_auth.get(provider='google-oauth2')
+		response1 = requests.get(
+			'https://www.googleapis.com/plus/v1/people/me/',
+			params={'access_token': social.extra_data['access_token']}
+		)
+		# friends = response.json()['items']
+		print response1
+		print response1.json()
+
+
+		# print profile
 
 def signUp(request):
 	if request.method == 'POST':
@@ -102,7 +144,7 @@ def signUp(request):
 		if len(user) != 0:
 			resp = "false"
 		else:
-			methods.create_user(name,email,username,hash_pwd)
+			user = methods.create_user(name,email,username,hash_pwd)
 			s['username'] = username
 			s['userid'] = user.userid
 			s.save()
