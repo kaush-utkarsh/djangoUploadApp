@@ -53,6 +53,11 @@ class User_File_Table(models.Model):
 	file_status = models.CharField(max_length=512,null=True,blank=True)
 	file_upload_date = models.DateField(null=True,blank=True)
 	admin_comments = models.CharField(max_length=512,null=True,blank=True)
+
+class Uploaded_File_Table(models.Model):
+	upload_id = models.AutoField(primary_key=True)
+	upload_field = models.CharField(max_length=512, null=True, blank=True)
+	userid = models.IntegerField(null=True, blank=True)
 	
 class Admin_File_Table(models.Model):
 	fileid = models.AutoField(primary_key=True)

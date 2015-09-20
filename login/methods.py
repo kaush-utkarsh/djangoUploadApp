@@ -39,6 +39,11 @@ def create_social_user(name,source,userid):
 	user.save()
 	return user
 
+def upload_video(name, userid):
+	upload = Uploaded_File_Table(upload_field=name, userid=userid)
+	upload.save()
+	return upload.upload_id
+
 def get_project(userid,project):
 	project = ''
 	try:

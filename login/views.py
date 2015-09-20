@@ -1,9 +1,12 @@
 from django.shortcuts import render,render_to_response
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.template.context import RequestContext
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.sessions.backends.db import SessionStore
 from django.views.decorators.csrf import csrf_exempt
-import traceback, time, datetime, hashlib, json, methods, requests
+import traceback, time, datetime, hashlib, json, methods, requests, os
+from WeEdit import settings
 
 
 s = SessionStore()
@@ -88,6 +91,21 @@ def create_project(request):
 		resp = {"project_id":project.projectid,"project_title":project_title}
 
 		return HttpResponse(json.dumps(resp))
+
+@csrf_exempt
+def upload_file(request):
+	resp = {"success":[]}
+	userid = s['userid']
+	if request.method == 'POST':
+		print request.FILES
+		upfile = request.FILES.getlist('my_file')
+		for data in upfile:
+			path = default_storage.save(data.name, ContentFile(data.read()))
+			tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+			id = methods.upload_video(tmp_file, userid)
+			resp["success"].append(id)
+
+	return HttpResponse(json.dumps(resp))
 
 def save_profile(backend, user, response, *args, **kwargs):
 	if backend.name == 'facebook':

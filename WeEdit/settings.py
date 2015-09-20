@@ -145,3 +145,4 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'd2e5688437bf6de58adee80e7d3d587f'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '384129660158-gmhmadac3cpql8bfku7p7rp8cis92qic.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'JQRZqyFx8weFQr2R6NQw9nDg'
 
+MEDIA_ROOT = "/home/ubuntu/uploads"

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^dashboard/', views.dashboard),
     url(r'^new-project/', views.new_project),
     url(r'^create-project/', views.create_project),
+    url(r'^upload-file/', views.upload_file),
     # url(r'^login/', views.home),
     url(r'^$', views.home),
     url('', include('social.apps.django_app.urls', namespace='social')),

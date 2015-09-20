@@ -99,12 +99,15 @@
 											<li onclick="fetchDropBox(this,'vids');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
 											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
 											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
-											<li><a href="#"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
+											<li>
+												<a href="#" onclick="uploadManual('vids')"><i class="glyphicon glyphicon-upload"></i> Upload</a>
+											</li>
 										</ul>
 									</div>
 								</div>
 							</h4>
 						</div>
+												<input type="file" id="my_file" name="my_file" style="display: none;" />
 						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 							<!-- <div class="panel-body">
 								<div class="row">
@@ -174,7 +177,7 @@
 											<li onclick="fetchDropBox(this,'aud');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
 											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
 											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
-											<li><a href="#"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
+											<li><a href="#" onclick="uploadManual('aud')"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
 										</ul>
 									</div>
 								</div>
@@ -270,6 +273,33 @@
 				    // see File types below. By default, all extensions are allowed.
 				    extensions: ['.pdf', '.doc', '.docx','.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv', '.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma'],
 				};
+		function uploadManual(fileType){
+			$("input[id='my_file']").click();
+		}
+		$("input[id='my_file']").on('change', function(evt){
+			files = evt.target.files;
+console.log(files);
+			var data = new FormData();
+			$.each(files, function(key, value){
+			        data.append("my_file", value);
+			});
+console.log(data);
+			$.ajax({
+				url: "/upload-file/",
+				type: "POST",
+				data: data,
+				cache: false,
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				success: function(data, textStatus, jqXHR){
+					alert("in succcess block");
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert("error");
+				}
+			});
+		});
 		function fetchDropBox(item,fileType)
 		{
 			if(fileType=="vids")
