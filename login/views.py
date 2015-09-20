@@ -97,20 +97,45 @@ def save_profile(backend, user, response, *args, **kwargs):
 		# profile.gender = response.get('gender')
 		# profile.link = response.get('link')
 		# profile.timezone = response.get('timezone')
-		print user.social_auth.get(provider='facebook').uid
-		# print user.social_auth.get(provider='facebook').email
-		print response
+		# print user.social_auth.get(provider='facebook').access_token
+		# url = u'https://graph.facebook.com/{0}/' \
+		# 	  u'?fields=email' \
+		# 	  u'&access_token={1}'.format(
+		# 	user.social_auth.get(provider='facebook').uid,
+		# 	user.social_auth.get(provider='facebook').access_token,
+		# )
+		# print url
+		# r = requests.get(url)
+		# print r.json()
+		# email = r.json().get('email')
+		# print email
+		# # print user.social_auth.get(provider='facebook').email
+
+		u = methods.get_social_user(response['id'],"facebook")
+		if len(u) != 0:
+			u1 = json.loads(u)
+			s['username'] = response['name']
+			s['userid'] = u1[0]['pk']
+			s.save()
+		else:
+			u = methods.create_social_user(response['name'],"facebook",response['id'])
+			s['username'] = response['name']
+			s['userid'] = u.userid
+			s.save()
+			# resp = username
+		# return HttpResponse(resp)
+		# print response
 		# print profile
 
 def user_details(backend, user, response, *args, **kwargs):
-	if backend.name == 'facebook':
-		# profile = user.get_profile()
-		# if profile is None:
-		# 	profile = Profile(user_id=user.id)
-		# profile.gender = response.get('gender')
-		# profile.link = response.get('link')
-		# profile.timezone = response.get('timezone')
-		print response
+	# if backend.name == 'facebook':
+	# 	# profile = user.get_profile()
+	# 	# if profile is None:
+	# 	# 	profile = Profile(user_id=user.id)
+	# 	# profile.gender = response.get('gender')
+	# 	# profile.link = response.get('link')
+	# 	# profile.timezone = response.get('timezone')
+	# 	print response
 		# print profile
 	if backend.name == 'google':
 		# profile = user.get_profile()
@@ -120,14 +145,15 @@ def user_details(backend, user, response, *args, **kwargs):
 		# profile.link = response.get('link')
 		# profile.timezone = response.get('timezone')
 		print response['access_token']
-		social = user.social_auth.get(provider='google-oauth2')
-		response1 = requests.get(
-			'https://www.googleapis.com/plus/v1/people/me/',
-			params={'access_token': social.extra_data['access_token']}
-		)
-		# friends = response.json()['items']
-		print response1
-		print response1.json()
+		print response['uid']
+		# social = user.social_auth.get(provider='google-oauth2')
+		# response1 = requests.get(
+		# 	'https://www.googleapis.com/plus/v1/people/me/',
+		# 	params={'access_token': social.extra_data['access_token']}
+		# )
+		# # friends = response.json()['items']
+		# print response1
+		# print response1.json()
 
 
 		# print profile
