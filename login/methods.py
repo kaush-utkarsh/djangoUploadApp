@@ -19,6 +19,26 @@ def create_user(name,email,username,hash_pwd):
 	user.save()
 	return user
 
+def get_social_user(userid,source):
+	user = ''
+	try:
+		if source is 'facebook':
+			user = User_Details.objects.get(facebook_id = userid)
+		else:
+			user = User_Details.objects.get(google_id = userid)
+	except User_Details.DoesNotExist:
+		user = []
+		return user
+	return serializers.serialize("json", [user])
+
+def create_social_user(name,source,userid):
+	if source is 'facebook':
+		user= User_Details(name=name, facebook_id = userid)
+	else:
+		user= User_Details(name=name, google_id = userid)
+	user.save()
+	return user
+
 def get_project(userid,project):
 	project = ''
 	try:
