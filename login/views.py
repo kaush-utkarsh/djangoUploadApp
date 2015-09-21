@@ -13,6 +13,7 @@ s = SessionStore()
 		
 def home(request):
 	if 'username' in s.keys():
+		print s
 		if s['username'] != '':
 			data = {'username': s['username']}
 			return render(request, "base.html", data)
@@ -20,8 +21,8 @@ def home(request):
 	context = RequestContext(request,
 						   {'request': request,
 							'user': request.user})
-	return render_to_response('login.html',
-						 context_instance=context)
+	return render_to_response('login.html')
+#						 context_instance=context)
 
 
 def dashboard(request):
@@ -197,7 +198,7 @@ def signUp(request):
 
 @csrf_exempt
 def signOut(request):
-	if request.method == 'POST':
+	if request.method == 'POST' or request.method == 'GET':
 		s['username'] = ''
 		s.save()
 
