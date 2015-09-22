@@ -58,7 +58,7 @@ def create_project(userid,project_title,project_instructions):
 	project.save()
 	return project
 
-def add_files(userid,projectid,name,link,thumbnail,ftype,source):
-	nFile= User_File_Table(userid=userid, projectid=projectid, file_title = name, file_web_path = link, file_thumbnail_path =thumbnail, file_type = ftype,file_source_type =source )
+def add_files(userid,projectid,name,link,server,thumbnail,ftype,source):
+	nFile= User_File_Table(userid=userid, projectid=projectid, file_title = name, file_web_path = link, file_server_path = server, file_thumbnail_path =thumbnail, file_type = ftype,file_source_type =source )
 	nFile.save()
 	return nFile

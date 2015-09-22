@@ -137,4 +137,4 @@ SOCIAL_AUTH_FACEBOOK_SECRET ='dc32dc72be056068a530eb68b704b14b'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='584696154376-qndne8hmetetnompekupcn1lpkg24r81.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='eW-kBdEAzO-ffK-YNq6Z3nty'
 
-MEDIA_ROOT = "/home/ubuntu/uploads"
+MEDIA_ROOT = "/home/utkarsh/uploads"

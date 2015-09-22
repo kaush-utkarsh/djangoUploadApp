@@ -5,7 +5,7 @@ from django.template.context import RequestContext
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.sessions.backends.db import SessionStore
 from django.views.decorators.csrf import csrf_exempt
-import traceback, time, datetime, hashlib, json, methods, requests, os
+import traceback, time, datetime, hashlib, json, methods, requests, os, string
 from WeEdit import settings
 
 
@@ -29,6 +29,17 @@ def dashboard(request):
 		if s['username'] != '':
 			data = {'username': s['username']}
 			return render(request, "dashboard.html", data)
+
+	context = RequestContext(request,
+						   {'request': request,
+							'user': request.user})
+	return HttpResponseRedirect("/")
+
+def checkout(request):
+	if 'username' in s.keys():
+		if s['username'] != '':
+			data = {'username': s['username']}
+			return render(request, "payment.html", data)
 
 	context = RequestContext(request,
 						   {'request': request,
@@ -86,95 +97,74 @@ def create_project(request):
 		project = methods.create_project(s['userid'],project_title,instructions)
 		
 		for f in json.loads(files):
-			methods.add_files(s['userid'],project.projectid,f['name'],f['link'],f['thumbnail'],f['type'],f['source'])
+			methods.add_files(s['userid'],project.projectid,f['name'],f['link'],'',f['thumbnail'],f['type'],f['source'])
 
 		resp = {"project_id":project.projectid,"project_title":project_title}
-
+		s['current_project'] = project.projectid
 		return HttpResponse(json.dumps(resp))
 
 @csrf_exempt
-def upload_file(request):
+def upload_video_file(request):
 	resp = {"success":[]}
 	userid = s['userid']
+	projectid = s['current_project']
 	if request.method == 'POST':
 		print request.FILES
 		upfile = request.FILES.getlist('my_file')
+		print upfile
 		for data in upfile:
-			path = default_storage.save(data.name, ContentFile(data.read()))
+			print data
+			current_timestamp = string.replace(string.replace(string.replace(string.replace(str(datetime.datetime.now()),' ',''),'.',''),':',''),'-','')
+			path = default_storage.save(current_timestamp, ContentFile(data.read()))
 			tmp_file = os.path.join(settings.MEDIA_ROOT, path)
-			id = methods.upload_video(tmp_file, userid)
-			resp["success"].append(id)
-
+			methods.add_files(userid,projectid,data.name,'',tmp_file,'','video','local upload')
+			# id = methods.upload_video(timezonemp_file, userid)
+			# resp["success"].append(id)
+			resp = "dsad"
 	return HttpResponse(json.dumps(resp))
+
+
+@csrf_exempt
+def upload_audio_file(request):
+	resp = {"success":[]}
+	userid = s['userid']
+	projectid = s['current_project']
+	if request.method == 'POST':
+		print request.FILES
+		upfile = request.FILES.getlist('my_file')
+		print upfile
+		for data in upfile:
+			print data
+			current_timestamp = string.replace(string.replace(string.replace(string.replace(str(datetime.datetime.now()),' ',''),'.',''),':',''),'-','')
+			path = default_storage.save(current_timestamp, ContentFile(data.read()))
+			tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+			methods.add_files(userid,projectid,data.name,'',tmp_file,'','audio','local upload')
+			# id = methods.upload_video(timezonemp_file, userid)
+			# resp["success"].append(id)
+			resp = "dsad"
+	return HttpResponse(json.dumps(resp))
+
 
 def save_profile(backend, user, response, *args, **kwargs):
 	if backend.name == 'facebook':
-		# profile = user.get_profile()
-		# if profile is None:
-		# 	profile = Profile(user_id=user.id)
-		# profile.gender = response.get('gender')
-		# profile.link = response.get('link')
-		# profile.timezone = response.get('timezone')
-		# print user.social_auth.get(provider='facebook').access_token
-		# url = u'https://graph.facebook.com/{0}/' \
-		# 	  u'?fields=email' \
-		# 	  u'&access_token={1}'.format(
-		# 	user.social_auth.get(provider='facebook').uid,
-		# 	user.social_auth.get(provider='facebook').access_token,
-		# )
-		# print url
-		# r = requests.get(url)
-		# print r.json()
-		# email = r.json().get('email')
-		# print email
-		# # print user.social_auth.get(provider='facebook').email
+		name = 'name'
+		social = 'facebook'		
+	else:
+		name = 'displayName'
+		social = 'google'		
 
-		u = methods.get_social_user(response['id'],"facebook")
-		if len(u) != 0:
-			u1 = json.loads(u)
-			s['username'] = response['name']
-			s['userid'] = u1[0]['pk']
-			s.save()
-		else:
-			u = methods.create_social_user(response['name'],"facebook",response['id'])
-			s['username'] = response['name']
-			s['userid'] = u.userid
-			s.save()
-			# resp = username
-		# return HttpResponse(resp)
-		# print response
-		# print profile
-
-def user_details(backend, user, response, *args, **kwargs):
-	# if backend.name == 'facebook':
-	# 	# profile = user.get_profile()
-	# 	# if profile is None:
-	# 	# 	profile = Profile(user_id=user.id)
-	# 	# profile.gender = response.get('gender')
-	# 	# profile.link = response.get('link')
-	# 	# profile.timezone = response.get('timezone')
-	# 	print response
-		# print profile
-	if backend.name == 'google':
-		# profile = user.get_profile()
-		# if profile is None:
-		# 	profile = Profile(user_id=user.id)
-		# profile.gender = response.get('gender')
-		# profile.link = response.get('link')
-		# profile.timezone = response.get('timezone')
-		print response['access_token']
-		print response['uid']
-		# social = user.social_auth.get(provider='google-oauth2')
-		# response1 = requests.get(
-		# 	'https://www.googleapis.com/plus/v1/people/me/',
-		# 	params={'access_token': social.extra_data['access_token']}
-		# )
-		# # friends = response.json()['items']
-		# print response1
-		# print response1.json()
-
-
-		# print profile
+	u = methods.get_social_user(response['id'],social)
+	
+	if len(u) != 0:
+		u1 = json.loads(u)
+		s['username'] = response[name]
+		s['userid'] = u1[0]['pk']
+		s.save()
+	else:
+		u = methods.create_social_user(response[name],social,response['id'])
+		s['username'] = response[name]
+		s['userid'] = u.userid
+		s.save()
 
 def signUp(request):
 	if request.method == 'POST':

@@ -33,11 +33,9 @@
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 			<![endif]-->
 			<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="ka4kg1gb2iv4psm"></script>
-
 		</head>
 
 		<body>
-
 			<!-- Fixed navbar -->
 			<nav class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
@@ -96,69 +94,32 @@
 									<div class="dropdown">
 										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Sources <b class="caret"></b></a>
 										<ul class="dropdown-menu">
-											<li onclick="fetchDropBox(this,'vids');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
-											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
+											<li onclick="fetchDropBox(this,'vids');">
+												<a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a>
+											</li>
 											<li>
-												<a href="#" onclick="uploadManual('vids')"><i class="glyphicon glyphicon-upload"></i> Upload</a>
+												<a href="#" onclick="uploadManual(this)"><i class="glyphicon glyphicon-upload"></i> Upload</a>
+												<input type="file" class="my_video_file" name="my_file" style="display: none;" accept="image/*, video/*" multiple/>
 											</li>
 										</ul>
 									</div>
 								</div>
 							</h4>
 						</div>
-												<input type="file" id="my_file" name="my_file" style="display: none;" />
 						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-							<!-- <div class="panel-body">
-								<div class="row">
-									<div class="col-md-1">
-										<div class="video-box">
-											<div class="upload-icon">
-												<i class="glyphicon glyphicon-facetime-video"></i>
-											</div>
-											<input type="checkbox" name="video">
-										</div>
-									</div>
-									<div class="col-md-1">
-										<div class="video-box">
-											<div class="upload-icon">
-												<i class="glyphicon glyphicon-facetime-video"></i>
-											</div>
-											<input type="checkbox" name="video">
-										</div>
-									</div>
-									<div class="col-md-1">
-										<div class="video-box">
-											<div class="upload-icon">
-												<i class="glyphicon glyphicon-facetime-video"></i>
-											</div>
-											<input type="checkbox" name="video">
-										</div>
-									</div>
-									<div class="col-md-1">
-										<div class="video-box">
-											<div class="upload-icon">
-												<i class="glyphicon glyphicon-facetime-video"></i>
-											</div>
-											<input type="checkbox" name="video">
-										</div>
-									</div>
-									<div class="col-md-1">
-										<div class="video-box">
-											<div class="upload-icon">
-												<i class="glyphicon glyphicon-facetime-video"></i>
-											</div>
-											<input type="checkbox" name="video">
-										</div>
-									</div>
-								</div>
-							</div> -->
 							<div class="panel-body">
 								<div class="container pull-left">
 									<div class="row" id="dropboxVideos">
 									</div>
 								</div>
 							</div>
+							<div class="panel-body">
+								<div class="container pull-left">
+									<div class="row" id="localUploadVideos">
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 					<div class="panel panel-default">
@@ -174,10 +135,13 @@
 									<div class="dropdown">
 										<a href="#" data-toggle="dropdown" class="dropdown-toggle">Sources <b class="caret"></b></a>
 										<ul class="dropdown-menu">
-											<li onclick="fetchDropBox(this,'aud');"><a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a></li>
-											<!-- <li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li>
-											<li><a href="#"><i class="glyphicon glyphicon-adjust"></i> Cloud Source</a></li> -->
-											<li><a href="#" onclick="uploadManual('aud')"><i class="glyphicon glyphicon-upload"></i> Upload</a></li>
+											<li onclick="fetchDropBox(this,'aud');">
+												<a href="#" ><i class="glyphicon glyphicon-cloud-upload"></i> Drop Box</a>
+											</li>
+											<li>
+												<a href="#" onclick="uploadManual(this)"><i class="glyphicon glyphicon-upload"></i> Upload</a>
+												<input type="file" class="my_audio_file" name="my_file" style="display: none;" accept="audio/*" multiple/>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -187,6 +151,12 @@
 							<div class="panel-body">
 								<div class="container pull-left">
 									<div class="row" id="dropboxMusic">
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="container pull-left">
+									<div class="row" id="localUploadAudios">
 									</div>
 								</div>
 							</div>
@@ -211,7 +181,6 @@
 					</div>
 				</div>
 			</div>
-
 			<footer class="footer">
 				<div class="container">
 					<div id="navbar" class="collapse navbar-collapse fooler-bar">
@@ -226,13 +195,12 @@
 						<ul class="nav navbar-nav col-md-5 cus-btn">
 							<li><a href="#"><input class="btn btn-link" type="button" value="Cancel" name="cancel"></a></li>
 							<li><a href="#"><input class="btn btn-primary" type="button" onclick="create_project()" value="Save" name="save"></a></li>
+							<li id="loading" style="display:none;"><img src="{% static 'img/loader.gif' %}"/></li>
 							<li><a href="#"><input class="btn btn-default" type="button" value="Checkout" name="checkout"></a></li>
 						</ul>
 					</div>
 				</div>
 			</footer>
-
-
 			<!-- Bootstrap core JavaScript
 			================================================== -->
 			<!-- Placed at the end of the document so the pages load faster -->
@@ -244,123 +212,25 @@
 		</body>
 		<script type="text/javascript">
 		var dropBoxFiles; 
-		var options = {
-
-				    // Required. Called when a user selects an item in the Chooser.
-				    success: function(files) {
-					    // dropBoxFiles = files
-				    	console.log(files)
-				    },
-
-				    // Optional. Called when the user closes the dialog without selecting a file
-				    // and does not include any parameters.
-				    cancel: function() {
-
-				    },
-
-				    // Optional. "preview" (default) is a preview link to the document for sharing,
-				    // "direct" is an expiring link to download the contents of the file. For more
-				    // information about link types, see Link types below.
-				    linkType: "direct", // or "direct"
-
-				    // Optional. A value of false (default) limits selection to a single file, while
-				    // true enables multiple file selection.
-				    multiselect: true, // or false
-
-				    // Optional. This is a list of file extensions. If specified, the user will
-				    // only be able to select files with these extensions. You may also specify
-				    // file types, such as "video" or "images" in the list. For more information,
-				    // see File types below. By default, all extensions are allowed.
-				    extensions: ['.pdf', '.doc', '.docx','.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv', '.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma'],
-				};
-		function uploadManual(fileType){
-			$("input[id='my_file']").click();
-		}
-		$("input[id='my_file']").on('change', function(evt){
-			files = evt.target.files;
-console.log(files);
-			var data = new FormData();
-			$.each(files, function(key, value){
-			        data.append("my_file", value);
-			});
-console.log(data);
-			$.ajax({
-				url: "/upload-file/",
-				type: "POST",
-				data: data,
-				cache: false,
-				dataType: 'json',
-				processData: false,
-				contentType: false,
-				success: function(data, textStatus, jqXHR){
-					alert("in succcess block");
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					alert("error");
-				}
-			});
+		var video_files;
+		var audio_files;
+		var video_filesList = []
+		var audio_filesList = []
+		$("input[class='my_video_file']").on('change', function(evt){
+			video_files = evt.target.files;
+			video_filesList.push(video_files)
+			updatelocalVideos()
+			// console.log(video_files);
 		});
-		function fetchDropBox(item,fileType)
-		{
-			if(fileType=="vids")
-			{
-				options.extensions = ['.bmp', '.cr2', '.gif', '.ico', '.ithmb', '.jpeg', '.jpg', '.nef', '.png', '.raw', '.svg', '.tif', '.tiff', '.wbmp', '.webp', '.3g2', '.3gp', '.3gpp', '.3gpp2', '.asf', '.avi', '.dv', '.dvi', '.flv', '.m2t', '.m4v', '.mkv', '.mov', '.mp4', '.mpeg', '.mpg', '.mts', '.ogv', '.ogx', '.rm', '.rmvb', '.ts', '.vob', '.webm', '.wmv']
-			
-				options.success = function(files)
-				{
-					
-					$.each(files,function(i,item){
-						if(item.thumbnailLink == undefined)
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
-						else
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
+		$("input[class='my_audio_file']").on('change', function(evt){
+			audio_files = evt.target.files;
+			audio_filesList.push(audio_files)
+			updatelocalAudios()
+			// console.log(video_files);
+		});
 
-			            $('#dropboxVideos').append(thumbnail)
-					})
-
-					updateStats()
-				}
-
-			}
-			else
-			{
-				options.extensions = ['.aac', '.aif', '.aifc', '.aiff', '.au', '.flac', '.m4a', '.m4b', '.m4p', '.m4r', '.mid', '.mp3', '.oga', '.ogg', '.opus', '.ra', '.ram', '.spx', '.wav', '.wma']
-				
-				options.success = function(files)
-				{
-	
-					$.each(files,function(i,item){
-						if(item.thumbnailLink == undefined)
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
-						else
-							var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
-
-
-			            $('#dropboxMusic').append(thumbnail)
-					})
-
-					updateStats()
-				}
-			}
-			Dropbox.choose(options);
-		}
-
-		function populateFiles()
-		{
-			$.each(dropBoxFiles,function(i,item){
-				
-			})
-
-		}
-	        function setProjectTitle(item)
-	        {
-	        	if(($(item).val()).trim()!="")
-	        		$('#projectTitle').html($(item).val())
-	        	else
-	        		$('#projectTitle').html("Project Title")
-	        	// console.log($(item).val())
-	        }
 	    </script>
+
 	{% else %}
 	
 		<head>
@@ -369,5 +239,6 @@ console.log(data);
 		<script type="text/javascript">
 	        window.location.href = "/"
 	    </script>
+
 	{% endif %}
 </html>
