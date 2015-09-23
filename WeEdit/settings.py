@@ -69,8 +69,7 @@ SOCIAL_AUTH_PIPELINE = (
     'login.views.save_profile',  # <--- set the path to the function
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
-    'login.views.user_details'
+    'social.pipeline.user.user_details'
 )
 
 
@@ -96,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'weedit',
         'USER' : 'root',
-        'PASSWORD' : "root",
+        'PASSWORD' : "password",
         'HOST' : '127.0.0.1',
         'PORT' : 3306,
     }
@@ -130,11 +129,16 @@ STATICFILES_DIRS = (
 )
 
 
-
 SOCIAL_AUTH_FACEBOOK_KEY ='178681532464428'
 SOCIAL_AUTH_FACEBOOK_SECRET ='dc32dc72be056068a530eb68b704b14b'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='584696154376-qndne8hmetetnompekupcn1lpkg24r81.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='eW-kBdEAzO-ffK-YNq6Z3nty'
+SOCIAL_AUTH_FACEBOOK_KEY = '944310785629217'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd2e5688437bf6de58adee80e7d3d587f'
 
-MEDIA_ROOT = "/home/utkarsh/uploads"
+#SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='584696154376-qndne8hmetetnompekupcn1lpkg24r81.apps.googleusercontent.com'
+#SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='eW-kBdEAzO-ffK-YNq6Z3nty'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '384129660158-gmhmadac3cpql8bfku7p7rp8cis92qic.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'JQRZqyFx8weFQr2R6NQw9nDg'
+
+MEDIA_ROOT = "/home/ubuntu/uploads"
