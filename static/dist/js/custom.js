@@ -130,9 +130,9 @@ function fetchDropBox(item,fileType)
             
             $.each(files,function(i,item){
                 if(item.thumbnailLink == undefined)
-                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
+                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='checkbox' checked alt='"+item.name+"'><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
                 else
-                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
+                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxVideoFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='checkbox' checked  alt='"+item.name+"'><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
 
                 $('#dropboxVideos').append(thumbnail)
             })
@@ -150,9 +150,9 @@ function fetchDropBox(item,fileType)
 
             $.each(files,function(i,item){
                 if(item.thumbnailLink == undefined)
-                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
+                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='checkbox' checked  alt='"+item.name+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value=''></div></div></div>";
                 else
-                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
+                    var thumbnail="<div class='col-sm-2 col-md-2'><div class='thumbnail'><img data-src='holder.js/100%x200' alt='100%x200' style='width: 150px; display: block;' src='"+item.thumbnailLink+"' data-holder-rendered='true'><div class='caption dropBoxMusicFiles'><h3 style='font-size:15px;'>"+item.name+"</h3><input type='checkbox' checked  alt='"+item.name+"'><input type='hidden' id='fileName' value='"+item.name+"'><input type='hidden' id='fileLink' value='"+item.link+"'><input type='hidden' id='fileSize' value='"+item.bytes+"'><input type='hidden' id='fileThumbnail' value='"+item.thumbnailLink+"'></div></div></div>";
 
 
                 $('#dropboxMusic').append(thumbnail)
@@ -191,7 +191,7 @@ function uploadLocalFiles(projectId)
     {
         $.each(vid, function(key, value)
         {
-            if($.inArray(""+value.lastModified.toString(), checkedVids))
+            if($.inArray(value.lastModified.toString(), checkedVids)>=0)
                 data.append("my_file", value);
         });
     });
@@ -205,6 +205,27 @@ function uploadLocalFiles(projectId)
         dataType: 'json',
         processData: false,
         contentType: false,
+        xhr: function()
+            {
+            var xhr = new window.XMLHttpRequest();
+            //Upload progress
+            xhr.upload.addEventListener("progress", function(evt){
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                //Do something with upload progress
+                console.log(percentComplete);
+              }
+            }, false);
+            //Download progress
+            xhr.addEventListener("progress", function(evt){
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                //Do something with download progress
+                console.log(percentComplete);
+              }
+            }, false);
+            return xhr;
+            },
         success: function(data, textStatus, jqXHR){
             // alert("in succcess block");
         },
@@ -218,7 +239,7 @@ function uploadLocalFiles(projectId)
     {
         $.each(aud, function(key, value)
         {
-            if($.inArray(""+value.lastModified.toString(), checkedAuds))
+            if($.inArray(value.lastModified.toString(), checkedAuds)>=0)
                 data.append("my_file", value);
         });
     });
@@ -261,13 +282,19 @@ function create_project()
 
     var uploadedFiles = []
     $('.dropBoxVideoFiles').each(function(i,item){
-    	var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"video", source:"dropbox"}
-    	uploadedFiles.push(videoFile)
+        if ($(item).find('input[type="checkbox"]').is(":checked"))
+    	{
+            var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"video", source:"dropbox"}
+    	   uploadedFiles.push(videoFile)
+        }
     })
     // var audioFiles =[]
     $('.dropBoxMusicFiles').each(function(i,item){
-    	var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"audio", source:"dropbox"}
-    	uploadedFiles.push(videoFile)
+    	if ($(item).find('input[type="checkbox"]').is(":checked"))
+        {
+           var videoFile= {name:$(item).find('#fileName').val(), link:$(item).find('#fileLink').val(), thumbnail:$(item).find('#fileThumbnail').val(), type:"audio", source:"dropbox"}
+    	   uploadedFiles.push(videoFile)
+        }
     })
 
     var projectTitle = $('#projectTitle').html()
