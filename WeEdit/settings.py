@@ -69,8 +69,8 @@ SOCIAL_AUTH_PIPELINE = (
     'login.views.save_profile',  # <--- set the path to the function
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
-    'login.views.user_details'
+    'social.pipeline.user.user_details'
+    # 'login.views.user_details'
 )
 
 
