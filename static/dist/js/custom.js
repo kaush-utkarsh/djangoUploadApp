@@ -276,7 +276,7 @@ function showDashboard()
 
 }
 
-function create_project()
+function create_project(item)
 {
     var uploadedFiles = []
     $('.dropBoxVideoFiles').each(function(i,item){
@@ -326,7 +326,7 @@ function create_project()
 
     $('#loading').show()
     $("body").addClass("overlay");
-
+    $(item).attr('disabled','disabled')
     $(".overlay").css({
         "position": "absolute", 
         "width": $(document).width(), 
