@@ -275,7 +275,7 @@ function showDashboard()
     $('#user-payment').hide()
 
 }
-function showDashboard()
+function showCheckout()
 {
     $('#user-dashboard').hide()
     $('#user-payment').show()
