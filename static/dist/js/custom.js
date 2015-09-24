@@ -275,6 +275,12 @@ function showDashboard()
     $('#user-payment').hide()
 
 }
+function showDashboard()
+{
+    $('#user-dashboard').hide()
+    $('#user-payment').show()
+
+}
 
 function create_project(item)
 {
