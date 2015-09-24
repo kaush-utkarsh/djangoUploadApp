@@ -8,7 +8,7 @@ from django.core import serializers
 def get_user(username):
 	user = ''
 	try:
-		user = User_Details.objects.get(username = username)
+		user = User_Details.objects.get(email = username)
 	except User_Details.DoesNotExist:
 		user = []
 		return user
@@ -54,7 +54,7 @@ def get_project(userid,project):
 	return serializers.serialize("json", [project])
 
 def create_project(userid,project_title,project_instructions):
-	project= Project_Table(userid=userid, project_title=project_title, project_instructions = project_instructions)
+	project= Project_Table(userid=userid, project_title=project_title, project_instructions = project_instructions,project_status = 0)
 	project.save()
 	return project
 

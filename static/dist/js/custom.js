@@ -65,7 +65,7 @@ function updatelocalVideos()
     {
         $.each(vid, function(key, value)
         {
-          var img = "<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-facetime-video'></i><div class='caption localVideoFiles'><h3 style='font-size:15px;'>"+value.name+"</h3><input type='checkbox' checked class='vid' name='"+value.lastModified+"' alt='"+value.name+"'></div></div></div>"
+          var img = "<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-facetime-video'></i><div class='caption localVideoFiles'><h3 style='font-size:15px;'>"+value.name+"</h3><input type='checkbox' checked class='vid' onclick='updateStats()' name='"+value.lastModified+"' alt='"+value.name+"' size='"+value.size+"'></div></div></div>"
          $('#localUploadVideos').append(img)
           // console.log(value)
         });
@@ -78,7 +78,7 @@ function updatelocalAudios()
     {
         $.each(vid, function(key, value)
         {
-          var img = "<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption localVideoFiles'><h3 style='font-size:15px;'>"+value.name+"</h3><input type='checkbox' checked class='aud' name='"+value.lastModified+"' alt='"+value.name+"'></div></div></div>"
+          var img = "<div class='col-sm-2 col-md-2'><div class='thumbnail'><i class='glyphicon glyphicon-music'></i><div class='caption localVideoFiles'><h3 style='font-size:15px;'>"+value.name+"</h3><input type='checkbox' checked class='aud' onclick='updateStats()' name='"+value.lastModified+"' alt='"+value.name+"' size='"+value.size+"'></div></div></div>"
          $('#localUploadAudios').append(img)
           // console.log(value)
         });
@@ -261,25 +261,23 @@ function uploadLocalFiles(projectId)
         }
     });    
 
+    $('#loading').hide()
+    $("body").removeClass("overlay");
 
-
-    window.location.href = "/checkout/"
+    $('#user-dashboard').hide()
+    $('#user-payment').show()
+    // window.location.href = "/checkout/"
 }
 
+function showDashboard()
+{
+    $('#user-dashboard').show()
+    $('#user-payment').hide()
 
+}
 
 function create_project()
 {
-    $('#loading').show()
-    $("body").prepend("<div class=\"overlay\"></div>");
-
-    $(".overlay").css({
-        "position": "absolute", 
-        "width": $(document).width(), 
-        "height": $(document).height(),
-        "z-index": 99999, 
-    }).fadeTo(0, 0.8);
-
     var uploadedFiles = []
     $('.dropBoxVideoFiles').each(function(i,item){
         if ($(item).find('input[type="checkbox"]').is(":checked"))
@@ -296,11 +294,46 @@ function create_project()
     	   uploadedFiles.push(videoFile)
         }
     })
+    
+    var projectTitle = $('#projectTitle').html().trim()
+    var instructions = $('#instructions').val().trim()
 
-    var projectTitle = $('#projectTitle').html()
-    var instructions = $('#instructions').val()
+    if(projectTitle=="" || instructions == "")
+    {
+        alert("Please dont leave the project and instruction field blank!")
+        return false;
+    }
+
+    var checkedVids = []
+    $('input[class="vid"]').each(function(i,item){
+      if(item.checked)
+        checkedVids.push($(item).attr("name"))
+    })
+    var checkedAuds = []
+    $('input[class="aud"]').each(function(i,item){
+      if(item.checked)
+        checkedAuds.push($(item).attr("name"))
+    })
+
+    if((checkedAuds.length==0)&&(checkedVids.length==0)&&(uploadedFiles.length==0))
+    {
+        alert("Please upload atleast one file to create the project.")
+        return false;
+    }
+
     var payload = {projectTitle:projectTitle, instructions:instructions, files: JSON.stringify(uploadedFiles)}
     var url = "/create-project/"
+
+    $('#loading').show()
+    $("body").addClass("overlay");
+
+    $(".overlay").css({
+        "position": "absolute", 
+        "width": $(document).width(), 
+        "height": $(document).height(),
+        "z-index": 99999, 
+    }).fadeTo(0, 0.8);
+
     var resultset = ajaxRequest(payload,url)
     resultset = JSON.parse(resultset.responseText)
     var projectId = resultset.project_id
@@ -332,22 +365,60 @@ function logOut()
     window.location.href='/'
 }
 
+function validatThis(item)
+{
+    var c=0
+    $(item).parents('.container').find('input').each(function(i,it){
+    if(it.value=="")
+        {  
+            $(it).attr("style","border-color:red")
+            c=1
+        }
+    })
+    if(c==1)
+        alert("Please dont leve the fields blank")
+}
+
 function updateStats()
 {
 	var vidCount = $('.dropBoxVideoFiles').length
 	var musCount = $('.dropBoxMusicFiles').length
 	var sum = 0
 	$('.dropBoxVideoFiles').each(function(i,item){
-		sum = sum+parseInt(parseInt($(item).find('#fileSize').val())/1000000)
+		sum = sum+parseFloat(parseFloat($(item).find('#fileSize').val())/1000000)
 		
 	})
 	// var audioFiles =[]
 	$('.dropBoxMusicFiles').each(function(i,item){
-		sum = sum+parseInt(parseInt($(item).find('#fileSize').val())/1000000)
+		sum = sum+parseFloat(parseFloat($(item).find('#fileSize').val())/1000000)
 
 	})
 
+
+    var checkedVids = []
+    $('input[class="vid"]').each(function(i,item){
+      if(item.checked)
+        {
+            checkedVids.push($(item).attr("name"))
+            sum = sum+parseFloat(parseFloat($(item).attr("size"))/1000000)
+        }
+    })
+    var checkedAuds = []
+    $('input[class="aud"]').each(function(i,item){
+      if(item.checked)
+        {
+            checkedAuds.push($(item).attr("name"))
+            sum = sum+parseFloat(parseFloat($(item).attr("size"))/1000000)
+        }
+        
+    })
+
+    vidCount = parseInt(vidCount) + checkedVids.length 
+    musCount = parseInt(musCount) + checkedAuds.length 
+
+    // sum = sum + vidCount + musCount
+
 	$('#MusCount').html("Music "+musCount)
 	$('#VidCount').html("Videos "+vidCount)
-	$('#priceCount').html("Total: <b>$ "+sum+"</b>")
+	$('#priceCount').html("Total: <b>$ "+sum.toFixed(2)+"</b>")
 }

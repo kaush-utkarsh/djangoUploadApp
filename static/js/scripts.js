@@ -114,6 +114,19 @@ jQuery(document).ready(function() {
         else if(cnt==0 && $(this).attr('id')=='signUpForm')
         {
             console.log($(this).serialize())
+            
+            if($('#form-password').val().length<6)
+            {
+                $('#form-password').addClass('input-error')
+                $('#pwdlengthError').attr('style','display:block;')
+                return false;   
+            }
+            if($('#form-password').val()!==$('#form-password-confirm').val())
+            {
+                $('#form-password-confirm').addClass('input-error')
+                $('#wrongpwdError').attr('style','display:block;')
+                return false;   
+            }
             var resultset = makeAjax($(this).serialize(),"/signUp/")
             if (resultset.responseText == "false")
             {

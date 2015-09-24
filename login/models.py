@@ -28,6 +28,7 @@ class Project_Table(models.Model):
 	project_title = models.CharField(max_length=512,null=True,blank=True)
 	project_instructions = models.CharField(max_length=512,null=True,blank=True)
 	project_status = models.CharField(max_length=512,null=True,blank=True)
+	# project_status = {0: Saved and payment pending, 1: payment made, 2: admin-downloaded, 3: admin-uploaded}
 	admin_comments = models.CharField(max_length=512,null=True,blank=True)
 	project_cost = models.CharField(max_length=512,null=True,blank=True)
 	pricing_detail_id = models.CharField(max_length=512,null=True,blank=True)

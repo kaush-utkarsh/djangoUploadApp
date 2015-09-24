@@ -47,6 +47,28 @@ def checkout(request):
 							'user': request.user})
 	return HttpResponseRedirect("/")
 
+def portfolio(request):
+	if 'username' in s.keys():
+		if s['username'] != '':
+			data = {'username': s['username']}
+			return render(request, "portfolio.html", data)
+
+	context = RequestContext(request,
+						   {'request': request,
+							'user': request.user})
+	return HttpResponseRedirect("/")
+
+def refer(request):
+	if 'username' in s.keys():
+		if s['username'] != '':
+			data = {'username': s['username']}
+			return render(request, "refer.html", data)
+
+	context = RequestContext(request,
+						   {'request': request,
+							'user': request.user})
+	return HttpResponseRedirect("/")
+
 def new_project(request):
 	if 'username' in s.keys():
 		if s['username'] != '':
@@ -169,9 +191,10 @@ def save_profile(backend, user, response, *args, **kwargs):
 
 def signUp(request):
 	if request.method == 'POST':
-		username = request.POST.get('form-username', '')
+		# username = request.POST.get('form-username', '')
 		name = request.POST.get('form-name','')
 		email = request.POST.get('form-email','')
+		username = email
 		password = request.POST.get('form-password','')
 		hash_pwd = hashlib.md5(password).hexdigest()
 		user = ''
